@@ -6,6 +6,7 @@ import AppLayout from './components/AppLayout';
 import HomePage from './components/HomePage';
 import ChartLearning from './math/chart/ChartLearning';
 import PracticeOperations from './math/operations/PracticeOperations';
+import PracticeGeography from './geo/quiz/PracticeGeography';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             <Route index element={<HomePage />} />
             <Route path="math/chart" element={<ChartLearning />} />
             <Route path="math/operations" element={<PracticeOperations />} />
+            <Route path="geo/quiz" element={<PracticeGeography />} />
             {/* Add more routes here as needed */}
           </Route>
         </Routes>

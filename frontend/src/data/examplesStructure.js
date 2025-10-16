@@ -65,6 +65,23 @@ export const examplesStructure = {
       }
     }
   },
+  geo: {
+    title: "Geagraphie",
+    icon: "Zap",
+    examples: {
+      mechanics: {
+        title: "Quiz",
+        icon: "Settings",
+        path: "/geo/quiz",
+        component: "Geo"
+      }
+    }
+  }
+};
+
+
+/*
+,
   physics: {
     title: "Physique",
     icon: "Zap",
@@ -89,7 +106,8 @@ export const examplesStructure = {
       }
     }
   }
-};
+
+*/
 
 // Fonction pour obtenir tous les chemins disponibles
 export const getAllPaths = () => {
