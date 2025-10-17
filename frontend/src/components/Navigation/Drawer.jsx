@@ -20,7 +20,7 @@ import {
   Atom, 
   BookOpen 
 } from 'lucide-react';
-import { examplesStructure } from '../../data/examplesStructure';
+import { menuStructure } from '../../data/menuStructure';
 
 // Map d'icônes
 const iconMap = {
@@ -34,7 +34,7 @@ const iconMap = {
   BookOpen
 };
 
-const ExampleDrawer = ({ isOpen, onClose }) => {
+const Drawer = ({ isOpen, onClose }) => {
   const [expandedSections, setExpandedSections] = useState({ math: true });
   const [expandedExamples, setExpandedExamples] = useState({ charts: true });
   const navigate = useNavigate();
@@ -69,12 +69,12 @@ const ExampleDrawer = ({ isOpen, onClose }) => {
         <SheetHeader>
           <SheetTitle className="flex items-center space-x-2">
             <BookOpen className="w-5 h-5" />
-            <span>Exemples d'apprentissage</span>
+            <span>Domaines d'Apprentissage</span>
           </SheetTitle>
         </SheetHeader>
         
         <div className="mt-6 space-y-2">
-          {Object.entries(examplesStructure).map(([sectionKey, section]) => {
+          {Object.entries(menuStructure).map(([sectionKey, section]) => {
             const SectionIcon = iconMap[section.icon] || BookOpen;
             const isExpanded = expandedSections[sectionKey];
             
@@ -177,4 +177,4 @@ const ExampleDrawer = ({ isOpen, onClose }) => {
   );
 };
 
-export default ExampleDrawer;
+export default Drawer;

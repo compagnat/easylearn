@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Button } from './ui/button';
 import { Menu, Home } from 'lucide-react';
-import ExampleDrawer from './Navigation/ExampleDrawer';
+import Drawer from './Navigation/Drawer';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const AppLayout = () => {
@@ -25,7 +25,7 @@ const AppLayout = () => {
               className="flex items-center space-x-2"
             >
               <Menu size={20} />
-              <span className="hidden sm:inline">Exemples</span>
+              <span className="hidden sm:inline">Domaines</span>
             </Button>
             
             {!isHomePage && (
@@ -55,7 +55,7 @@ const AppLayout = () => {
       </main>
 
       {/* Drawer */}
-      <ExampleDrawer 
+      <Drawer 
         isOpen={isDrawerOpen} 
         onClose={() => setIsDrawerOpen(false)} 
       />

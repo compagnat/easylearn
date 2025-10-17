@@ -1,5 +1,5 @@
 // Structure hiérarchique des exemples
-export const examplesStructure = {
+export const menuStructure = {
   math: {
     title: "Mathématiques",
     icon: "Calculator",
@@ -113,7 +113,7 @@ export const examplesStructure = {
 export const getAllPaths = () => {
   const paths = [];
   
-  Object.entries(examplesStructure).forEach(([sectionKey, section]) => {
+  Object.entries(menuStructure).forEach(([sectionKey, section]) => {
     Object.entries(section.examples).forEach(([exampleKey, example]) => {
       paths.push({
         path: example.path,

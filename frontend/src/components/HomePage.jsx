@@ -14,7 +14,7 @@ import {
   Atom,
   ArrowRight 
 } from 'lucide-react';
-import { examplesStructure } from '../data/examplesStructure';
+import { menuStructure } from '../data/menuStructure';
 
 const iconMap = {
   Calculator,
@@ -32,7 +32,7 @@ const HomePage = () => {
 
   const getFeaturedExamples = () => {
     const featured = [];
-    Object.entries(examplesStructure).forEach(([sectionKey, section]) => {
+    Object.entries(menuStructure).forEach(([sectionKey, section]) => {
       Object.entries(section.examples).forEach(([exampleKey, example]) => {
         featured.push({
           ...example,
@@ -117,7 +117,7 @@ const HomePage = () => {
           Domaines d'Apprentissage
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {Object.entries(examplesStructure).map(([sectionKey, section]) => {
+          {Object.entries(menuStructure).map(([sectionKey, section]) => {
             const SectionIcon = iconMap[section.icon] || BookOpen;
             const exampleCount = Object.keys(section.examples).length;
             
