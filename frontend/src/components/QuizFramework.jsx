@@ -1,103 +1,54 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
-import { Button } from '../../components/ui/button';
-import { Input } from '../../components/ui/input';
-import { Badge } from '../../components/ui/badge';
-import { Progress } from '../../components/ui/progress';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Button } from './ui/button';
+import { Badge } from './ui/badge';
+import { Progress } from './ui/progress';
 import { 
   ArrowLeft, 
-  Globe, 
-  MapPin, 
   Target,
   Trophy,
   CheckCircle,
   XCircle,
   SkipForward,
   RotateCcw,
-  Compass,
-  Mountain,
-  Flag,
   Clock
 } from 'lucide-react';
-import { CATEGORIES, GEOGRAPHY_QUESTIONS } from './data';
-import { LEVELS } from '../../data/Main';
-import AnimationManager from '../../components/animations/AnimationManager';
-import { useSoundManager } from '../../components/animations/SoundManager';
+import AnimationManager from './animations/AnimationManager';
+import { useSoundManager } from './animations/SoundManager';
 
-
-
-
-const LEVEL_CONFIG = {
-  [LEVELS.BEGINNER]: {
-    name: 'Débutant',
-    description: 'Découvrir les continents et les océans',
-    icon: '🌍',
-    categories: [CATEGORIES.CONTINENTS, CATEGORIES.OCEANS]
-  },
-  [LEVELS.ELEMENTARY]: {
-    name: 'Élémentaire',
-    description: 'Apprendre les pays et leurs formes',
-    icon: '🗺️',
-    categories: [CATEGORIES.CONTINENTS, CATEGORIES.COUNTRIES, CATEGORIES.OCEANS]
-  },
-  [LEVELS.INTERMEDIATE]: {
-    name: 'Intermédiaire',
-    description: 'Maîtriser les capitales et monuments',
-    icon: '🏛️',
-    categories: [CATEGORIES.COUNTRIES, CATEGORIES.CAPITALS, CATEGORIES.LANDMARKS]
-  },
-  [LEVELS.ADVANCED]: {
-    name: 'Avancé',
-    description: 'Expert en géographie mondiale',
-    icon: '🎓',
-    categories: Object.values(CATEGORIES).filter(c => c !== CATEGORIES.MIXED)
-  }
-};
-
-const CATEGORY_LABELS = {
-  [CATEGORIES.CONTINENTS]: 'Continents',
-  [CATEGORIES.COUNTRIES]: 'Pays',
-  [CATEGORIES.CAPITALS]: 'Capitales',
-  [CATEGORIES.OCEANS]: 'Océans',
-  [CATEGORIES.LANDMARKS]: 'Monuments célèbres',
-  [CATEGORIES.MIXED]: 'Mélange de tout'
-};
-
-const CATEGORY_ICONS = {
-  [CATEGORIES.CONTINENTS]: Globe,
-  [CATEGORIES.COUNTRIES]: Flag,
-  [CATEGORIES.CAPITALS]: MapPin,
-  [CATEGORIES.OCEANS]: Compass,
-  [CATEGORIES.LANDMARKS]: Mountain,
-  [CATEGORIES.MIXED]: Target
-};
-
-
-// Générateur de questions
+// Générateur de questions générique
 class QuestionGenerator {
-  static generateQuestion(level, category) {
-    console.log('QuestionGenerator input:', { level, category });
-    console.log('Available categories:', Object.keys(GEOGRAPHY_QUESTIONS));
-    
-    if (category === CATEGORIES.MIXED) {
-      const availableCategories = LEVEL_CONFIG[level].categories.filter(c => c !== CATEGORIES.MIXED);
+  static generateQuestion(level, category, questionsData) {
+    if (category === 'mixed') {
+      // Pour mixed, prendre une catégorie aléatoire parmi celles disponibles pour le niveau
+      const availableCategories = Object.keys(questionsData).filter(c => c !== 'mixed');
       category = availableCategories[Math.floor(Math.random() * availableCategories.length)];
     }
 
-    console.log('Final category after processing:', category);
-    const questions = GEOGRAPHY_QUESTIONS[category] || [];
-    console.log('Questions found:', questions.length);
-    
+    const questions = questionsData[category] || [];
     if (questions.length === 0) return null;
 
-    const question = questions[Math.floor(Math.random() * questions.length)];
+    // Filtrer par niveau si spécifié dans les questions
+    const levelQuestions = questions.filter(q => !q.level || q.level === level);
+    const finalQuestions = levelQuestions.length > 0 ? levelQuestions : questions;
+
+    if (finalQuestions.length === 0) return null;
+
+    const question = finalQuestions[Math.floor(Math.random() * finalQuestions.length)];
     return { ...question, category };
   }
 }
 
-// Composant principal
-const PracticeGeography = () => {
+const QuizFramework = ({
+  title,
+  description,
+  icon: MainIcon,
+  levels,
+  categories,
+  questionsData,
+  questionCount = 10
+}) => {
   const { playClick, playSuccess, playError } = useSoundManager();
   const [selectedLevel, setSelectedLevel] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -115,8 +66,6 @@ const PracticeGeography = () => {
   const [showAnimation, setShowAnimation] = useState(false);
   const [animationType, setAnimationType] = useState(null);
 
-  const questionCount = 10;
-
   useEffect(() => {
     if (gameStarted && selectedLevel && selectedCategory) {
       generateNewQuestion();
@@ -129,7 +78,7 @@ const PracticeGeography = () => {
       return;
     }
     
-    const question = QuestionGenerator.generateQuestion(selectedLevel, selectedCategory);
+    const question = QuestionGenerator.generateQuestion(selectedLevel, selectedCategory, questionsData);
     
     if (!question) {
       console.error('No question generated for level:', selectedLevel, 'category:', selectedCategory);
@@ -442,13 +391,13 @@ const PracticeGeography = () => {
         className="text-center mb-12"
       >
         <div className="flex items-center justify-center space-x-3 mb-6">
-          <Globe size={48} className="text-blue-600" />
+          <MainIcon size={48} className="text-blue-600" />
           <h1 className="text-5xl font-bold text-gray-900">
-            Pratiquer la Géographie
+            {title}
           </h1>
         </div>
         <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-          Découvrez le monde ! Apprenez les continents, pays, capitales et monuments célèbres.
+          {description}
         </p>
       </motion.div>
 
@@ -458,9 +407,9 @@ const PracticeGeography = () => {
           Choisissez votre niveau
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
-          {Object.entries(LEVEL_CONFIG).map(([key, level], index) => (
+          {levels.map((level, index) => (
             <motion.div
-              key={key}
+              key={level.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
@@ -468,11 +417,11 @@ const PracticeGeography = () => {
             >
               <Card
                 className={`cursor-pointer transition-all ${
-                  selectedLevel === key ? 'ring-2 ring-blue-500 bg-blue-50' : ''
+                  selectedLevel === level.id ? 'ring-2 ring-blue-500 bg-blue-50' : ''
                 }`}
                 onClick={() => {
                   playClick();
-                  setSelectedLevel(key);
+                  setSelectedLevel(level.id);
                 }}
               >
                 <CardHeader className="text-center">
@@ -499,11 +448,11 @@ const PracticeGeography = () => {
             Choisissez une catégorie
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 max-w-6xl mx-auto">
-            {[...LEVEL_CONFIG[selectedLevel].categories, CATEGORIES.MIXED].map((category, index) => {
-              const IconComponent = CATEGORY_ICONS[category];
+            {categories.map((category, index) => {
+              const IconComponent = category.icon;
               return (
                 <motion.div
-                  key={category}
+                  key={category.id}
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: index * 0.1 }}
@@ -511,18 +460,18 @@ const PracticeGeography = () => {
                 >
                   <Card
                     className={`cursor-pointer transition-all ${
-                      selectedCategory === category ? 'ring-2 ring-green-500 bg-green-50' : ''
+                      selectedCategory === category.id ? 'ring-2 ring-green-500 bg-green-50' : ''
                     }`}
                     onClick={() => {
                       playClick();
-                      setSelectedCategory(category);
+                      setSelectedCategory(category.id);
                     }}
                   >
                     <CardHeader className="text-center pb-2">
                       <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-r from-blue-400 to-green-400 flex items-center justify-center mb-2">
                         <IconComponent size={24} className="text-white" />
                       </div>
-                      <CardTitle className="text-sm">{CATEGORY_LABELS[category]}</CardTitle>
+                      <CardTitle className="text-sm">{category.name}</CardTitle>
                     </CardHeader>
                   </Card>
                 </motion.div>
@@ -542,7 +491,7 @@ const PracticeGeography = () => {
           <Card className="max-w-md mx-auto">
             <CardContent className="pt-6">
               <Button onClick={handleStart} size="lg" className="w-full bg-green-500 hover:bg-green-600">
-                <Globe className="w-5 h-5 mr-2" />
+                <MainIcon className="w-5 h-5 mr-2" />
                 Commencer l'aventure !
               </Button>
               <p className="text-sm text-gray-500 mt-4">
@@ -556,4 +505,4 @@ const PracticeGeography = () => {
   );
 };
 
-export default PracticeGeography;
+export default QuizFramework;
