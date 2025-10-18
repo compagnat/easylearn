@@ -76,6 +76,35 @@ export const menuStructure = {
         component: "Geo"
       }
     }
+  },
+  animals: {
+    title: "Animaux",
+    icon: "BookOpen", 
+    examples: {
+      quiz: {
+        title: "Quiz des Animaux",
+        icon: "BookOpen",
+        path: "/animals/quiz",
+        component: "AnimalsQuiz",
+        subExamples: {
+          petits: {
+            title: "4-5 ans - Petits Explorateurs",
+            path: "/animals/quiz?level=4-5ans",
+            component: "AnimalsQuiz"
+          },
+          jeunes: {
+            title: "6-8 ans - Jeunes Aventuriers", 
+            path: "/animals/quiz?level=6-8ans",
+            component: "AnimalsQuiz"
+          },
+          experts: {
+            title: "9-13 ans - Experts Animaliers",
+            path: "/animals/quiz?level=9-13ans",
+            component: "AnimalsQuiz"
+          }
+        }
+      }
+    }
   }
 };
 

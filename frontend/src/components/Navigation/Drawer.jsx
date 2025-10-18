@@ -35,8 +35,8 @@ const iconMap = {
 };
 
 const Drawer = ({ isOpen, onClose }) => {
-  const [expandedSections, setExpandedSections] = useState({ math: true });
-  const [expandedExamples, setExpandedExamples] = useState({ charts: true });
+  const [expandedSections, setExpandedSections] = useState({ math: true, animals: true });
+  const [expandedExamples, setExpandedExamples] = useState({ charts: true, quiz: true });
   const navigate = useNavigate();
   const location = useLocation();
 

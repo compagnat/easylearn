@@ -12,6 +12,7 @@ import PracticeMathFramework from './math/quiz/PracticeMathFramework';
 import TestMathFramework from './math/quiz/TestMathFramework';
 import PracticeGeographyModular from './geo/quiz/PracticeGeographyModular';
 import PracticeMathModular from './math/quiz/PracticeMathModular';
+import AnimalsQuiz from './animals/quiz/AnimalsQuiz';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
             <Route path="math/test" element={<TestMathFramework />} />
             <Route path="geo/modular" element={<PracticeGeographyModular />} />
             <Route path="math/modular" element={<PracticeMathModular />} />
+            <Route path="animals/quiz" element={<AnimalsQuiz />} />
             {/* Add more routes here as needed */}
           </Route>
         </Routes>

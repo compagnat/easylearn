@@ -290,6 +290,22 @@ const QuizFramework = ({
                 <CardTitle className="text-3xl text-center text-gray-800">
                   {currentQuestion.question}
                 </CardTitle>
+                {/* Affichage de l'image si disponible */}
+                {currentQuestion.image && (
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
+                    className="flex justify-center mt-4"
+                  >
+                    <img 
+                      src={currentQuestion.image} 
+                      alt="Illustration de la question"
+                      className="max-w-xs max-h-48 rounded-xl shadow-lg object-cover border-4 border-blue-200 hover:border-blue-300 transition-colors duration-300"
+                      loading="lazy"
+                    />
+                  </motion.div>
+                )}
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">

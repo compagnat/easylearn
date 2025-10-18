@@ -12,7 +12,8 @@ import {
   Settings, 
   FlaskConical, 
   Atom,
-  ArrowRight 
+  ArrowRight,
+  Heart 
 } from 'lucide-react';
 import { menuStructure } from '../data/menuStructure';
 
@@ -68,6 +69,50 @@ const HomePage = () => {
           Commencer avec les Graphiques
           <ArrowRight className="ml-2 w-5 h-5" />
         </Button>
+      </div>
+
+      {/* Quiz Animaux Spécial */}
+      <div className="mb-16">
+        <div className="max-w-4xl mx-auto">
+          <Card className="bg-gradient-to-r from-green-100 to-blue-100 border-2 border-green-300">
+            <CardHeader className="text-center">
+              <div className="flex items-center justify-center space-x-3 mb-4">
+                <Heart className="text-green-600 w-8 h-8" />
+                <CardTitle className="text-2xl text-green-800">🐾 Quiz des Animaux pour Enfants 🐾</CardTitle>
+              </div>
+              <p className="text-green-700">
+                Un quiz ludique spécialement conçu pour les enfants de 4 à 13 ans !
+              </p>
+            </CardHeader>
+            <CardContent className="text-center">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div className="bg-white rounded-lg p-4 shadow-sm">
+                  <div className="text-3xl mb-2">🐣</div>
+                  <div className="font-semibold text-green-800">4-5 ans</div>
+                  <div className="text-sm text-green-600">Petits Explorateurs</div>
+                </div>
+                <div className="bg-white rounded-lg p-4 shadow-sm">
+                  <div className="text-3xl mb-2">🦊</div>
+                  <div className="font-semibold text-green-800">6-8 ans</div>
+                  <div className="text-sm text-green-600">Jeunes Aventuriers</div>
+                </div>
+                <div className="bg-white rounded-lg p-4 shadow-sm">
+                  <div className="text-3xl mb-2">🦁</div>
+                  <div className="font-semibold text-green-800">9-13 ans</div>
+                  <div className="text-sm text-green-600">Experts Animaliers</div>
+                </div>
+              </div>
+              <Button 
+                onClick={() => navigate('/animals/quiz')} 
+                size="lg"
+                className="bg-green-600 hover:bg-green-700 text-white px-8 py-3"
+              >
+                🎯 Découvrir les Animaux
+                <ArrowRight className="ml-2 w-5 h-5" />
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
       </div>
 
       {/* Featured Examples */}
